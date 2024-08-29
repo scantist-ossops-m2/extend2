@@ -619,3 +619,18 @@ test('works without Array.isArray', function (t) {
   Array.isArray = savedIsArray;
   t.end();
 });
+
+test('fix __proto__ copy', function (t) {
+  var r = extend(true, {}, JSON.parse('{"__proto__": {"polluted": "yes"}}'));
+  t.deepEqual(
+    JSON.stringify(r),
+    '{}',
+    'It should not copy __proto__'
+  );
+  t.deepEqual(
+    ''.polluted,
+    undefined,
+    'It should not affect object prototype'
+  );
+  t.end();
+});
